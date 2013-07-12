@@ -34,6 +34,10 @@ Project License:
 
 2-clause Free BSD License
 
+Clarification:
+
+This project does not contain any code that uses imdb web services, apis, etc. It can only get information from a static file.
+
 
 imdb/amazon information copyright notice:
 
