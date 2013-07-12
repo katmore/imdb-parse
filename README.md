@@ -39,9 +39,9 @@ Clarification:
 This project does not contain any code that uses imdb web services, apis, etc. It can only get information from a static file.
 
 
-imdb/amazon information copyright notice:
+IMDb/Amazon information copyright notice:
 
-WARNING - WARNING - WARNING: The information contained in the Alternative Interfaces files is NOT free. The fact you may store data derived from the files on your own systems (in your own database server, etc) does not change the fact that IMDb/Amazon OWNS that data. IMDb/Amazon has very specified a narrow range of public uses which are allowed. The following statement comes from the Alternative Interfaces webpage:
+WARNING - WARNING - WARNING: The information contained in the Alternative Interfaces files is NOT free. The fact you may store data derived from the files on your own systems (in your own database server, etc) does not change the fact that IMDb OWNS that data. IMDb has specified a narrow range of uses which are allowed. The following statement comes from the Alternative Interfaces webpage:
 
 Please refer to the copyright/license information listed in each file for instructions on allowed usage. The data is NOT FREE although it may be used for free in specific circumstances.
 http://www.imdb.com/Copyright
