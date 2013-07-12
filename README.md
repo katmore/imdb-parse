@@ -26,3 +26,7 @@ Customization:
 
 1. if you want to have the data be stored somewhere other than MongoDB, say MySQL, start by making a copy of the folder "im-event-vardump" to "im-event-mysqlinsert", and edit files there to do the inserts. There are events that fire before and after parsing occurs (parse-start.inc.php, parse-done.inc.php) in addition to a persistent object variable that can be used to store things like your db connection variables ($this->eventdata). see the im-event-mongoinsert folder contents for an example on how that works.
 2. it would be nice to contribute any customizations back here
+
+License:
+
+2-clause Free BSD License
