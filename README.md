@@ -21,4 +21,7 @@ to im-config.php
 	$cfgIMEventDir[] = 'im-event-vardump';
 6. you may desire to have some visual indication of progress, there is an eventdir included for this purpose.
 	$cfgIMEventDir[] = 'im-event-justprogress';  
-7. if you want to have the data be stored somewhere other than Mongo, say MySQL,start by making a copy of the folder im-event-vardump and add code there to do the inserts. There are events that fire before and after parsing occurs (parse-start.inc.php, parse-done.inc.php) in addition to a persistent object variable that can be used to store things like your db connection variables ($this->eventdata). see the im-event-mongoinsert folder contents for an example on how that works.
+
+Customization:
+
+7. if you want to have the data be stored somewhere other than MongoDB, say MySQL, start by making a copy of the folder "im-event-vardump" to "im-event-mysqlinsert", and edit files there to do the inserts. There are events that fire before and after parsing occurs (parse-start.inc.php, parse-done.inc.php) in addition to a persistent object variable that can be used to store things like your db connection variables ($this->eventdata). see the im-event-mongoinsert folder contents for an example on how that works.
