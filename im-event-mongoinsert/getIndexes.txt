@@ -1,0 +1,60 @@
+> db.actress.getIndexes();
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "_id_"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"ehash" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "ehash_1"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"lcnameword" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "lcnameword_1",
+		"background" : true
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"ihash" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "ihash_1"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"lcfirstlast" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "lcfirstlast_1"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"lcfirstname" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "lcfirstname_1"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"lclastname" : 1
+		},
+		"ns" : "implay.actress",
+		"name" : "lclastname_1"
+	}
+]
