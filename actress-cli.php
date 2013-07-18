@@ -481,7 +481,7 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          }
          
          $improject->iname = utf8_encode(trim(substr($projectpart,0,$yppos1 - 1)));
-         $improject->ename = IM_htmlentities($improject->ename);
+         $improject->ename = IM_htmlentities($improject->iname);
 
          $improject->ehash = md5($improject->ename."+".$improject->iyear."+".$improject->type); //md5 of ename.'+'.year.'+'.$type
          
@@ -582,6 +582,7 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
    }
    
    //$improject_event->ready($improject);
+   $improject->ihash = md5($improject->iname."+".$improject->iyear."+".$improject->type); //md5 of ename.'+'.year.'+'.$type
    foreach($improject_event as $e) {
       $e->ready($improject);
    }
