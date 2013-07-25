@@ -77,10 +77,6 @@ require(IM_includedir."/episode.inc.php");
 require(IM_includedir."/project.inc.php");
 require(IM_includedir."/event.inc.php");
 
-function IM_htmlentities($string) {
-   return htmlentities($string,ENT_QUOTES,'UTF-8',false);
-}
-
 if (!is_readable($fActress)) {
    echo "\tcannot open .list file\n";
    echo "\t\t".$fActress."\n\n";
@@ -157,7 +153,7 @@ for ($i=1;$i<ACTORCLI_maxlines_tostart+1;$i++) {
 
 $aCount=0; //actress count
 $pCount=0; //project count
-while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
+while( $line = fgets($hActress,ACTORCLI_max_line_size)) {
    $i++;
    if ( ($i % 1000) == 0) {
       foreach($parse_event as $e) {
@@ -183,15 +179,10 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       
       $actress->ihash = md5($actress->iname);
       
-      $actress->ename = IM_htmlentities($actress->iname);
-      
-      $actress->ehash = md5($actress->ename);
-      
       if (IM_verbose_parse) {
          echo "\nline $i is new actress '".$actress->iname."'\n";
          echo "\tihash: ".$actress->ihash."\n";
-         echo "\tescaped: ".$actress->ename."\n";
-         echo "\tehash: ".$actress->ehash."\n";
+         echo "\tname: ".$actress->iname."\n";
       }
       
       //check for imdb unique name designator (roman numeral)
@@ -208,8 +199,8 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       $aname_strip = str_replace("\"", "", $aname_strip);
       $namepart = explode(",",$aname);
       foreach($namepart as $curpart) {
-         $actress->namepart[] = $curpart;
-         $actress->lcnamepart[] = strtolower($curpart);
+         $actress->namepart[] = trim($curpart);
+         $actress->lcnamepart[] = strtolower(trim($curpart));
       }
       
       $aname_strip = str_replace(",", "", $aname_strip);
@@ -224,35 +215,26 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          
          $actress->lastname = utf8_encode($aname);
          
-         $actress->elastname = IM_htmlentities($actress->lastname);
-         
         if (IM_verbose_parse)  echo "\t(actor only uses 1 name)\n";
          
       } else {
          
-         $actress->lastname = utf8_encode(trim($namepart[0]));
-         $actress->firstname = utf8_encode(trim($namepart[1]));
+         $actress->lastname = (trim($namepart[0]));
+         $actress->lclastname = (strtolower(trim($namepart[0])));
          
-         $actress->elastname = IM_htmlentities($actress->lastname);
-         $actress->efirstname = IM_htmlentities($actress->firstname);
-         
-         $actress->lcfirstname = strtolower($actress->firstname);
-         $actress->lcefirstname = strtolower($actress->efirstname);
-         
-         $actress->lclastname = strtolower($actress->lastname);
-         $actress->lcelastname = strtolower($actress->elastname);
+         $actress->firstname = (trim($namepart[1]));
+         $actress->lcfirstname = (strtolower(trim($namepart[1])));
          
          $actress->lcfirstlast = $actress->lcfirstname . " " . $actress->lclastname;
          $actress->firstlast = $actress->firstname . " " . $actress->lastname;
+         
+         $actress->lclastfirst = $actress->lclastname . " " . $actress->lcfirstname;
+         
       }
-      $actress->lclastname = utf8_encode(strtolower($actress->lastname));
-      $actress->lcelastname = strtolower($actress->elastname);
+      $actress->lclastname = (strtolower($actress->lastname));
       if (IM_verbose_parse) {
          echo "\tlastname: ".$actress->lastname."\n";
          echo "\tfirstname: ".$actress->firstname."\n";
-         
-         echo "\telastname: ".$actress->elastname."\n";
-         echo "\tefirstname: ".$actress->efirstname."\n";
          
          echo "\n";
       }
@@ -290,7 +272,6 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          }
       }
       $improject->iname = utf8_encode(substr($projectpart,$qpos1+1,($qpos2-$qpos1)-1));
-      $improject->ename = IM_htmlentities($improject->iname);
       $improject->type = "tv series";
       
       /*
@@ -311,8 +292,8 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       // }
       if (false !==($yppos1 = strpos($projectpart,"(",0))) {
          if (false !==($yppos2 = strpos($projectpart,")",0))) {
-            $improject->iyear = substr($projectpart,$yppos1+1,($yppos2-$yppos1)-1);
-            $improject->year = preg_replace("/[^0-9]/", "", $improject->iyear);
+            $year = substr($projectpart,$yppos1+1,($yppos2-$yppos1)-1);
+            $improject->year = preg_replace("/[^0-9]/", "", $year);
          } else {
             if (IM_display_exceptions) echo "\n\n\nline $i: closing parenth for tv year does not exist as expected\n";
             if (ACTORCLI_halt_on_parse_error) die();
@@ -320,8 +301,7 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       }
       
       
-      $improject->ehash = md5($improject->ename."+".$improject->iyear."+".$improject->type); //md5 of ename.'+'.year.'+'.$type
-      
+      $improject->ihash = md5($improject->iname."+".$improject->year."+".$improject->type);
       /*
        * get episode information
        */
@@ -333,8 +313,8 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       } 
       $imepisode = new imepisode();
       if (!empty($epinfopart)) {
-         
-         $imepisode->projectehash = $improject->ehash;
+         if (empty($improject->ihash)) throw new Exception('missing ihash during episode');
+         $imepisode->projectihash = $improject->ihash;
          //date if exists instead of season.episode
          //iname
          
@@ -357,14 +337,10 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          $eptitlepart = substr($epinfopart,0,$ppos1);
          if (!empty($eptitlepart)) {
             $imepisode->iname = utf8_encode(trim($eptitlepart));
-            $imepisode->ename = IM_htmlentities($imepisode->iname);
          }
          
          $sepnumpart = "";
          if (!empty($seppart)) {
-            
-
-            
             if (false !== ($dpos = strpos($seppart,"-",0))) {
                $justDate = true;
                
@@ -374,7 +350,11 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          
          
             if ($justDate) {
-               $imepisode->rundate = $seppart;
+               if (strtotime($seppart)!==false) {
+                  $imepisode->rundate = $seppart;
+               } else {
+                  $imepisode->rundate = utf8_encode($seppart);
+               }
             } else {
                if (false !== ($hpos1 = strpos($seppart,"#",0))) {
                   $sepnumpart = substr($seppart,$hpos1+1);
@@ -392,6 +372,7 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
                      if (IM_display_exceptions) echo "\n\n\nline $i: season episode not layed out as expected\n";
                      if (ACTORCLI_halt_on_parse_error) die();
                   }
+                  //echo "\n\n$line\n\n";
                }
                
             }
@@ -400,8 +381,7 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
             /*
              * check if has title
              */
-            $imepisode->iname = trim($epinfopart);
-            $imepisode->ename = IM_htmlentities($imepisode->ename);
+            $imepisode->iname = utf8_encode(trim($epinfopart));
             
             if (empty($imepisode->iname)) {
             
@@ -412,38 +392,33 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          }
          
 
-         
-         $imepisode->ehash = md5(
-            $imepisode->projectehash."+".
+         if (empty($imepisode->projectihash)) throw new Exception("cannot save episode without project to reference (missing projectihash)");
+         $imepisode->ihash = md5(
+            $imepisode->projectihash."+".
             $imepisode->season."+".
             $imepisode->episode."+".
             $imepisode->rundate."+".
-            $imepisode->ename
-         );  //md5 of projectehash.'+'.season.'+'.episode.'+'.rundate.'+'.ename
+            $imepisode->iname
+         );  
          
-         //ename
-         //ehash is //md5 of projectehash.'+'.season.'+'.episode
+   
    // public season;
    // public episode;
    // public rundate; //if given or if no season.episode given
    // public iname; //imdb name of episode
-   // public ename; //html escaped imdb name
-   // public ehash; //md5 of projectehash.'+'.season.'+'.episode.'+'.rundate
-   // public projectehash; //improject.ehash
          
          if (IM_verbose_parse) {
             echo "\t\t\tseason: '".$imepisode->season."'\n";
             echo "\t\t\tepisode: '".$imepisode->episode."'\n";
             echo "\t\t\trundate: '".$imepisode->rundate."'\n";
             echo "\t\t\tiname: '".$imepisode->iname."'\n";
-            echo "\t\t\tename: '".$imepisode->ename."'\n";
-            echo "\t\t\tehash: '".$imepisode->ehash."'\n";
-            echo "\t\t\tprojectehash: '".$imepisode->projectehash."'\n\n";
+            echo "\t\t\tprojectihash: '".$imepisode->projectihash."'\n\n";
             
             echo "\t\t\tepinfopart: '".$epinfopart."'\n\n";
          }
          
          //$imepisode_event->ready($imepisode);
+         
          foreach ($imepisode_event as $e) {
             $e->ready($imepisode);
          }
@@ -463,8 +438,8 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
        */
       if (false !==($yppos1 = strpos($projectpart,"(",0))) {
          if (false !==($yppos2 = strpos($projectpart,")",0))) {
-            $improject->iyear = substr($projectpart,$yppos1+1,($yppos2-$yppos1)-1);
-            $improject->year = preg_replace("/[^0-9]/", "", $improject->iyear);
+            $year = substr($projectpart,$yppos1+1,($yppos2-$yppos1)-1);
+            $improject->year = preg_replace("/[^0-9]/", "", $year);
          } else {
             if (IM_display_exceptions) echo "\n\n\nline $i: closing parenth for movie year does not exist as expected\n";
             if (ACTORCLI_halt_on_parse_error) die();
@@ -481,10 +456,8 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
          }
          
          $improject->iname = utf8_encode(trim(substr($projectpart,0,$yppos1 - 1)));
-         $improject->ename = IM_htmlentities($improject->iname);
 
-         $improject->ehash = md5($improject->ename."+".$improject->iyear."+".$improject->type); //md5 of ename.'+'.year.'+'.$type
-         
+         $improject->ihash = md5($improject->iname."+".$improject->year."+".$improject->type); 
       } else {
          if (IM_display_exceptions) echo "\n\n\nline $i: movie year info not as expected\n";
          if (ACTORCLI_halt_on_parse_error) die();
@@ -498,7 +471,6 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       if (false !==($bpos2 = strpos($projectpart,"]",0))) {
          
          $imcast->character = utf8_encode(substr($projectpart,$bpos1+1,($bpos2-$bpos1)-1));
-         $imcast->echaracter = IM_htmlentities($imcast->character);
          
       }
       
@@ -535,20 +507,23 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
       
    }
    
+   if (empty($actress->ihash)) throw new Exception("missing actress ihash");
    
-   $imcast->actressehash = $actress->ehash;
+   $imcast->actressihash = $actress->ihash;
    
-   $imcast->projectehash = $improject->ehash;
+   if (empty($improject->ihash)) throw new Exception("missing project ihash");
    
-   if (!empty($imepisode->ehash)) {
-      $imcast->episodehash = $imepisode->ehash;
+   $imcast->projectihash = $improject->ihash;
+   
+   if (!empty($imepisode->ihash)) {
+      $imcast->episodeihash = $imepisode->ihash;
    }
    
-   $imcast->ehash = md5 ( 
-      $imcast->projectehash . "+" . 
-      $imcast->actressehash . "+" . 
-      $imcast->echaracter . "+" . 
-      $imcast->episodehash . "+" . 
+   $imcast->ihash = md5 ( 
+      $imcast->projectihash . "+" . 
+      $imcast->actressihash . "+" . 
+      $imcast->character . "+" . 
+      $imcast->episodeihash . "+" . 
       $imcast->alias . "+" . 
       $imcast->billpos . "+" . 
       $imcast->isUncredited
@@ -557,23 +532,21 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
    //echo "\n\ntestUncredited: '$testUncredited'\n\n";
    if (IM_verbose_parse) {
       echo "\t\t\tcharacter: '".$imcast->character."'\n";
-      echo "\t\t\techaracter: '".$imcast->echaracter."'\n";
       echo "\t\t\talias: '".$imcast->alias."'\n";
       echo "\t\t\tbillpos: '".$imcast->billpos."'\n";
       echo "\t\t\tisUncredited: '".$imcast->isUncredited."'\n";
-      echo "\t\t\tprojectehash: '".$imcast->projectehash."'\n";
-      echo "\t\t\tactressehash: '".$imcast->actressehash."'\n";
-      echo "\t\t\tehash: '".$imcast->ehash."'\n\n";
+      echo "\t\t\tprojectihash: '".$imcast->projectihash."'\n";
+      echo "\t\t\tactressihash: '".$imcast->actressihash."'\n";
+      echo "\t\t\tihash: '".$imcast->ihash."'\n\n";
       
       // if (!empty($imcast->alias)) {
          // echo "\n\n\nfound alias\n";die();
       // }
       
       echo "\t\tiname: '".$improject->iname."'\n";
-      echo "\t\tename: '".$improject->ename."'\n";
-      echo "\t\tehash: '".$improject->ehash."'\n";
+      echo "\t\tihash: '".$improject->ihash."'\n";
       echo "\t\ttype: '".$improject->type."'\n";
-      echo "\t\tyear: '".$improject->iyear."'\n\n";
+      echo "\t\tyear: '".$improject->year."'\n\n";
    }
    
    //$imcast_event->ready($imcast);
@@ -582,7 +555,7 @@ while( $line = utf8_encode(fgets($hActress,ACTORCLI_max_line_size))) {
    }
    
    //$improject_event->ready($improject);
-   $improject->ihash = md5($improject->iname."+".$improject->iyear."+".$improject->type); //md5 of ename.'+'.year.'+'.$type
+   $improject->ihash = md5($improject->iname."+".$improject->year."+".$improject->type); 
    foreach($improject_event as $e) {
       $e->ready($improject);
    }
