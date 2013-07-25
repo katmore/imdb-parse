@@ -1,19 +1,17 @@
 <?php
 class imcast {
    
-   public $ehash; //md5 of below data
+   public $ihash; //md5 of below data
    
-   public $projectehash;
+   public $projectihash;
    
    //imactress.ehash
-   public $actressehash; 
+   public $actressihash; 
    
-   public $episodehash;
+   public $episodeihash;
    
    //[Character Name]
    public $character;
-   
-   public $echaracter; //html escaped char name
    
    //(as xxxxx)
    public $alias; 

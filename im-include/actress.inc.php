@@ -18,24 +18,14 @@ class imactress {
    
    public $ihash; //md5 hash of name as in file
    
-   public $ename; //htmlentities escaped imdb name
-   
-   public $ehash; //md5 hash of ename
-   
    //idesg=I when iname=Last, First (I)
    public $idesg;
    
    //$lastname=Last when $iname=Last, First (I)
    public $lastname;
    
-   public $elastname;
-   
    //firstname=First when $iname=Last, First (I)
    public $firstname;
-   
-   public $efirstname;
-   
-   public $iref; //imdb reference number
    
    public $origin; //actor, actress, etc
    
