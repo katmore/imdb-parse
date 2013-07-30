@@ -18,12 +18,11 @@ Usage Steps:
 3. run from command line: #$php actress-cli.php actresses.list 
 4. it will just display the data with im-config-sample.php values as included.
 if you want to do anything else with the data, like put it into a database, you need to add another eventdir in the config file. For example, to have it insert into mongodb add the line:
-	$cfgIMEventDir[] = 'im-event-mongoinsert';
-to im-config.php
+	$cfgIMEventDir[] = 'im-event-mongoinsert'; (to im-config.php)
 5. you may be interested in NOT having the data displayed (dumped to screen) as it parses, in this case just REMOVE the line:
-	$cfgIMEventDir[] = 'im-event-vardump';
+	$cfgIMEventDir[] = 'im-event-vardump'; (to im-config.php)
 6. you may desire to have some visual indication of progress, there is an eventdir included for this purpose. To use it add the following line:
-	$cfgIMEventDir[] = 'im-event-justprogress';  
+	$cfgIMEventDir[] = 'im-event-justprogress';  (to im-config.php)
 
 Customization:
 
