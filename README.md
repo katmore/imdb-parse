@@ -4,12 +4,12 @@ imdb-parse
 This project is not affiliated with IMDb, IMDb.com, Inc. or its affiliates ("IMDb").
 
 
-The goal of this project is to have an event based parser for IMDB alternative interfaces (plaintext files) available from
+The goal of this project is to have an event based parser for IMDb alternative interfaces (plaintext files) available from
 http://www.imdb.com/interfaces
 
 Description:
 
-A php script intended to be run via php-cli (actress-cli.php) parses an entire IMDB file from begining to end. It converts the data into instances of classes (objects). These classes are defined in the im-include folder, structured to be as simple as possible. An event is triggered when an object is "ready". "Ready" means the object has all the data possible to get from the IMDB file. In the im-config.php file, one or more folders with a set of php files with predefined filenames (such as actress-ready.php) can be indicated. At certain parsing 'events' (such as when the actress class is filled completly with all available data) the corresponding event file will be run; this is the means of registering a 'hook' to an event.
+A php script intended to be run via php-cli (actress-cli.php) parses an entire IMDb file from begining to end. It converts the data into instances of classes (objects). These classes are defined in the im-include folder, structured to be as simple as possible. An event is triggered when an object is "ready". "Ready" means the object has all the data possible to get from the IMDb file. In the im-config.php file, one or more folders with a set of php files with predefined filenames (such as actress-ready.php) can be indicated. At certain parsing 'events' (such as when the actress class is filled completly with all available data) the corresponding event file will be run; this is the means of registering a 'hook' to an event.
 
 Usage Steps:
 
@@ -48,7 +48,11 @@ http://www.imdb.com/Copyright
 
 Trademark Information:
 
-IMDb and other terms are registered trademarks, and the use of this data in conjunction with the term "IMDb" may be restricted. Refer to IMDb's published 'conditions of use' for more information. http://www.imdb.com/help/show_article?conditions 
+IMDb and other related terms are registered trademarks, and the use of this data in conjunction with the term "IMDb" may be restricted. Refer to IMDb's published 'conditions of use' for more information. http://www.imdb.com/help/show_article?conditions 
+
+MongoDB, Mongo, and the leaf logo are registered trademarks of 10gen.
+
+MySQL is a registered trademark of Oracle.
 
 Reiteration: 
 
