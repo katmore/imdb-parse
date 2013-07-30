@@ -9,7 +9,7 @@ http://www.imdb.com/interfaces
 
 Description:
 
-A php script intended to be run via php-cli (actress-cli.php) parses an entire IMDB file from begining to end. It converts the data into instances of classes (objects). These classes are defined in the im-include folder, structured to be as simple as possible. An event is triggered when an object is "ready". "Ready" means the object has all the data possible to get from the IMDB file. In the im-config.php file, one or more folders with a set of php files with predefined filenames (such as actress-ready.php) can be indicated. At certain parsing 'events' (such as when the actress class is filled completly with all available data) the corresponding event file will be run; this project's means of registering a 'hook' to an event.
+A php script intended to be run via php-cli (actress-cli.php) parses an entire IMDB file from begining to end. It converts the data into instances of classes (objects). These classes are defined in the im-include folder, structured to be as simple as possible. An event is triggered when an object is "ready". "Ready" means the object has all the data possible to get from the IMDB file. In the im-config.php file, one or more folders with a set of php files with predefined filenames (such as actress-ready.php) can be indicated. At certain parsing 'events' (such as when the actress class is filled completly with all available data) the corresponding event file will be run; this is the means of registering a 'hook' to an event.
 
 Usage Steps:
 
