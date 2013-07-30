@@ -23,6 +23,7 @@ if you want to do anything else with the data, like put it into a database, you 
 	$cfgIMEventDir[] = 'im-event-vardump'; (to im-config.php)
 6. you may desire to have some visual indication of progress, there is an eventdir included for this purpose. To use it add the following line:
 	$cfgIMEventDir[] = 'im-event-justprogress';  (to im-config.php)
+7. with only the visualizing events enabled it 10 to 20 minutes to parse the IMDb actresses.list or actors.list file. with mongodb insert events enabled, expect it to take about 8 hours per file.
 
 Customization:
 
