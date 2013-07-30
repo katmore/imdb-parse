@@ -20,9 +20,9 @@ Usage Steps:
 if you want to do anything else with the data, like put it into a database, you need to add another eventdir in the config file. For example, to have it insert into mongodb add the line:
 	$cfgIMEventDir[] = 'im-event-mongoinsert';
 to im-config.php
-5. you may be interested in NOT having the data displayed (dumped to screen) as it parses, in this case just REMOVE the line
+5. you may be interested in NOT having the data displayed (dumped to screen) as it parses, in this case just REMOVE the line:
 	$cfgIMEventDir[] = 'im-event-vardump';
-6. you may desire to have some visual indication of progress, there is an eventdir included for this purpose.
+6. you may desire to have some visual indication of progress, there is an eventdir included for this purpose. To use it add the following line:
 	$cfgIMEventDir[] = 'im-event-justprogress';  
 
 Customization:
