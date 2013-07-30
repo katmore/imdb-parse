@@ -1,7 +1,7 @@
 imdb-parse
 ==========
 
-This project is not affiliated with IMDb. IMDb.com, Inc. or its affiliates ("IMDb").
+This project is not affiliated with IMDb, IMDb.com, Inc. or its affiliates ("IMDb").
 
 
 The goal of this project is to have an event based parser for IMDB alternative interfaces (plaintext files) available from
