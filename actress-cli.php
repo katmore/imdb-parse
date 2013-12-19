@@ -366,8 +366,8 @@ while( $line = fgets($hActress,ACTORCLI_max_line_size)) {
                if (false !== (strpos($sepnumpart,".",0))) {
                   $sepnum = explode(".",$sepnumpart);
                   if (count($sepnum)==2) {
-                     $imepisode->season = $sepnum[0];
-                     $imepisode->episode = $sepnum[1];
+                     $imepisode->season = (int) $sepnum[0];
+                     $imepisode->episode = (int) $sepnum[1];
                   } else {
                      if (IM_display_exceptions) echo "\n\n\nline $i: season episode not layed out as expected\n";
                      if (ACTORCLI_halt_on_parse_error) die();
